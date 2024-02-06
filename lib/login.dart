@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pos/form_check.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -54,12 +55,14 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final loginController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _idController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    loginController.dispose();
+    _idController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -72,15 +75,25 @@ class _LoginFormState extends State<LoginForm> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: loginController,
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) return '아이디를 입력하여 주십시오.';
+                  if (!value.isValidId) return '올바른 아이디를 입력하여 주십시오.';
+                  return null;
+                },
+                controller: _idController,
                 decoration: const InputDecoration(labelText: 'id'),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: loginController,
+              child: TextFormField(
+                controller: _passwordController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) return '패스워드를 입력하여 주십시오.';
+                  if (!value.isValidPassword) return '올바른 패스워드를 입력하여 주십시오.';
+                  return null;
+                },
                 obscureText: true,
                 decoration: const InputDecoration(labelText: 'password'),
               ),
@@ -89,11 +102,9 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.all(8.0),
               child: FilledButton(
                 onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(content: Text(loginController.text));
-                      });
+                  if (_formKey.currentState!.validate()) {
+                    // TODO: login
+                  }
                 },
                 child: const Tooltip(
                   message: 'login',
