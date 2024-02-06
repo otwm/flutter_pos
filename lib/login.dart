@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pos/form_check.dart';
+
+import 'order.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -103,7 +107,13 @@ class _LoginFormState extends State<LoginForm> {
               child: FilledButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
+                    log('ok!!');
                     // TODO: login
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const Order(),
+                      ),
+                    );
                   }
                 },
                 child: const Tooltip(
