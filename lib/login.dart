@@ -107,7 +107,7 @@ class _LoginFormState extends State<LoginForm> {
               child: FilledButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    log('ok!!');
+                    log('login success');
                     // TODO: login
                     Navigator.of(context).push(
                       MaterialPageRoute(
