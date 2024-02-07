@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pos/model/menu_model.dart';
+import 'package:flutter_pos/models/menu_model.dart';
 
+import 'api/api.dart';
 import 'menu.dart';
 
-class Order extends StatelessWidget {
+class Order extends StatefulWidget {
   const Order({super.key});
+
+  @override
+  State<Order> createState() => _OrderState();
+}
+
+class _OrderState extends State<Order> {
+  late Future<List<MenuModel>> menuList;
+
+  @override
+  void initState() {
+    super.initState();
+    menuList = listMenu();
+  }
+
+  Widget buildList(List<MenuModel> menus) {
+    return Wrap(
+      children: menus.map((e) => Menu(menuModel: e)).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,25 +36,16 @@ class Order extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Wrap(
-            children: [
-              Menu(
-                menuModel: MenuModel(name: '해장국', price: 10000),
-                color: Colors.blueAccent,
-              ),
-              Menu(
-                menuModel: MenuModel(name: '떡복이', price: 5000),
-                color: Colors.cyanAccent,
-              ),
-              Menu(
-                menuModel: MenuModel(name: '쉐프의 추천', price: 8000),
-                color: Colors.amberAccent,
-              ),
-              Menu(
-                menuModel: MenuModel(name: '돈까스', price: 8000),
-              )
-            ],
-          ),
+          FutureBuilder<List<MenuModel>>(
+              future: menuList,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return buildList(snapshot.data!);
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}에러!!");
+                }
+                return const CircularProgressIndicator();
+              }),
           Container(child: null)
         ],
       ),

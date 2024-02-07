@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pos/model/menu_model.dart';
+import 'package:flutter_pos/models/menu_model.dart';
 
 class Menu extends StatelessWidget {
   final MenuModel menuModel;

@@ -1,0 +1,4 @@
+{
+  "env": "dev",
+  "apiDomain": "https://api-server-bay-five.vercel.app"
+}
